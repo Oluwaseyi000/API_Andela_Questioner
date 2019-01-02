@@ -1,18 +1,21 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let assert = chai.assert;
+
 let server = require('../server');
 let Meetups = require('../model/Meetup');
 let meetupController = require('../controller/Meetup');
-let routes = require('../routes');
+let routes =require('../routes');
 
 chai.use(chaiHttp);
-describe('/NON-PERSISTENCE DATABASE', () => {
-   it('Assert non-persistence database using array', done => {
+
+describe('/NON-PERSISTENCE DATABASE', ()=>{
+   it('Assert non-persistence database using array', done=>{
       assert.isArray(Meetups);
       done();
    })
 })
+
 
 
 describe('/POST A MEETUP', () => {
@@ -22,11 +25,22 @@ describe('/POST A MEETUP', () => {
          done();
       })
    })
+
+describe('/controller has createMeetup function', done=>{
+   it('Assert controller has a createMeetup function ', done=>{
+      assert.isFunction(meetupController.createMeetup);
+      done();
+  }) 
+})
+
+
+describe('/POST A MEETUP', () => {
    beforeEach(done => {
       Meetups = [];
       done();
    });
    describe('create/post a new meetup', done => {
+
       it(' create/post a new meetup', done => {
          let newMeetup = {
             id: Date.now(),
@@ -54,7 +68,12 @@ describe('/POST A MEETUP', () => {
                   assert.nestedProperty(res.body.data[i], 'coverImage');
                   assert.isNotEmpty(res.body.data[i].happeningOn);
                   assert.isArray(res.body.data[i].tag);
-
+                  assert.nestedProperty(res.body.data[i],'host');
+                  assert.nestedProperty(res.body.data[i],'details');
+                  assert.nestedProperty(res.body.data[i],'coverImage');
+                  assert.isNotEmpty(res.body.data[i].happeningOn);
+                  assert.isArray(res.body.data[i].tag);
+                 
                }
             });
          done();
@@ -109,4 +128,9 @@ describe('/GET A SPECIFIC MEETUP', () => {
       })
    })
 
+      afterEach(done => {
+         Meetups = [];
+         done();
+      });
+   
 })

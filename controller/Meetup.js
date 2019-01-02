@@ -1,13 +1,16 @@
 let Meetups = require('../model/Meetup');
 
 createMeetup = (req, res) => {
+
    let tags= req.body.tags instanceof Array ? req.body.tags : [req.body.tags]
+   
    const newMeetup = {
       id: Date.now(),
       topic: req.body.topic,
       location: req.body.location,
       happeningOn: req.body.happeningOn,
       tag: tags||null,
+      tag: [req.body.tags ||null],
       details: req.body.details || null,
       coverImage: req.body.coverImage||null,
       host: req.body.host ||null
@@ -31,6 +34,7 @@ createMeetup = (req, res) => {
       })
    }
 }
+
 
 getASpecificMeetupRecord = (req, res) => {
   
